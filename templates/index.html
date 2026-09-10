@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediInform · General Medicine Information Guidance</title>
+<style>
+  :root {
+    --primary: #B91C1C;
+    --accent: #FCA5A5;
+    --bg: #0f1115;
+    --panel: #171a21;
+    --text: #eef0f3;
+    --muted: #9aa3af;
+    --bubble-user: var(--primary);
+    --bubble-bot: #232733;
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% -10%, #FCA5A522, transparent 45%),
+      radial-gradient(circle at 100% 10%, #B91C1C33, transparent 40%),
+      var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    height: 88vh;
+    max-height: 820px;
+    background: var(--panel);
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+
+  header {
+    padding: 20px 24px;
+    background: linear-gradient(135deg, var(--primary), #B91C1Ccc);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  header .emoji {
+    font-size: 30px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    border-radius: 14px;
+  }
+
+  header .title { display: flex; flex-direction: column; }
+  header .title strong { font-size: 18px; letter-spacing: 0.2px; }
+  header .title span { font-size: 12.5px; color: rgba(255,255,255,0.8); }
+
+  header .dot {
+    margin-left: auto;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #3ddc84;
+    box-shadow: 0 0 0 4px rgba(61,220,132,0.2);
+  }
+
+  #chat {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .msg {
+    max-width: 82%;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    line-height: 1.45;
+    font-size: 14.5px;
+    white-space: pre-wrap;
+    animation: rise 0.25s ease;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.bot {
+    align-self: flex-start;
+    background: var(--bubble-bot);
+    border-bottom-left-radius: 4px;
+  }
+
+  .msg.user {
+    align-self: flex-end;
+    background: var(--bubble-user);
+    border-bottom-right-radius: 4px;
+    color: white;
+  }
+
+  .msg.typing { color: var(--muted); font-style: italic; }
+
+  .suggestions {
+    padding: 0 20px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    background: #1f2330;
+    border: 1px solid #2c3140;
+    color: var(--muted);
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+
+  form {
+    display: flex;
+    gap: 10px;
+    padding: 16px 20px 20px;
+    background: var(--panel);
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  #input {
+    flex: 1;
+    background: #1f2330;
+    border: 1px solid #2c3140;
+    color: var(--text);
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14.5px;
+    outline: none;
+  }
+  #input:focus { border-color: var(--accent); }
+
+  button[type="submit"] {
+    background: var(--accent);
+    color: #14161b;
+    border: none;
+    font-weight: 700;
+    padding: 0 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.1s ease;
+  }
+  button[type="submit"]:active { transform: scale(0.96); }
+  button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #2c3140; border-radius: 8px; }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="emoji">💊</div>
+      <div class="title">
+        <strong>MediInform</strong>
+        <span>General Medicine Information Guidance assistant</span>
+      </div>
+      <div class="dot" title="online"></div>
+    </header>
+
+    <div id="chat">
+      <div class="msg bot">Hi! I'm MediInform 💊 — I can help you with general medicine information guidance. Ask me anything in this area!</div>
+    </div>
+
+    <div class="suggestions" id="suggestions">
+      <div class="chip" data-q="What is generally used to relieve a mild headache?">What is generally used to relieve a mild headache?</div>
+      <div class="chip" data-q="Why are vaccinations important?">Why are vaccinations important?</div>
+      <div class="chip" data-q="What are some general first-aid steps for a minor cut?">What are some general first-aid steps for a minor cut?</div>
+    </div>
+
+    <form id="chat-form">
+      <input id="input" type="text" placeholder="Type your question..." autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+<script>
+  const chat = document.getElementById("chat");
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("input");
+  const suggestions = document.getElementById("suggestions");
+
+  function addMessage(text, sender) {
+    const div = document.createElement("div");
+    div.className = "msg " + sender;
+    div.textContent = text;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+    return div;
+  }
+
+  async function sendMessage(text) {
+    if (!text.trim()) return;
+    addMessage(text, "user");
+    input.value = "";
+    suggestions.style.display = "none";
+
+    const typingEl = addMessage("Typing...", "bot typing");
+
+    try {
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text })
+      });
+      const data = await res.json();
+      typingEl.remove();
+      addMessage(data.reply || "Sorry, something went wrong.", "bot");
+    } catch (err) {
+      typingEl.remove();
+      addMessage("Network error. Please check your connection and try again.", "bot");
+    }
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendMessage(input.value);
+  });
+
+  document.querySelectorAll(".chip").forEach((chip) => {
+    chip.addEventListener("click", () => sendMessage(chip.dataset.q));
+  });
+</script>
+</body>
+</html>
